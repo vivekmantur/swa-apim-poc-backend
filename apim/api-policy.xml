@@ -1,0 +1,23 @@
+<!--
+  API-level policy for the "swa-apim-poc" API.
+  The linked SWA product already adds validate-jwt (only the linked Static Web App gets through).
+  This policy adds the shared secret the .NET API checks, so the App Service rejects anything
+  that didn't come through APIM. The secret lives in the APIM named value "poc-gateway-secret".
+-->
+<policies>
+  <inbound>
+    <base />
+    <set-header name="X-Gateway-Secret" exists-action="override">
+      <value>{{poc-gateway-secret}}</value>
+    </set-header>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

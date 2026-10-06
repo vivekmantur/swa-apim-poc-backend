@@ -1,0 +1,16 @@
+# Build output
+bin/
+obj/
+publish/
+publish.zip
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Local secrets
+appsettings.*.local.json
+*.env
