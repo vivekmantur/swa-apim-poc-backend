@@ -36,6 +36,15 @@ builder.Services.AddInfrastructure();
 
 WebApplication app = builder.Build();
 
+// Fail closed: outside local development the API must never run without the gateway check,
+// otherwise anything that reaches it could send a forged x-ms-client-principal header.
+if (!app.Environment.IsDevelopment()
+    && string.IsNullOrWhiteSpace(app.Configuration[$"{GatewayOptions.SectionName}:Secret"]))
+{
+    throw new InvalidOperationException(
+        "Gateway:Secret is not set. Add the App Service setting Gateway__Secret with the same value as the APIM named value poc-gateway-secret.");
+}
+
 app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
